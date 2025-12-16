@@ -3,6 +3,7 @@
 #include <WebServer.h>
 
 void handleRoot();
+void handlePage1();
 void handleNotFound();
 
 const char *ssid = "Jan_Sch";
@@ -28,7 +29,44 @@ const char StartPage[] PROGMEM = R"htmlgrenze(
     </div>
   </body>
   </html>
-s)htmlgrenze";
+)htmlgrenze";
+
+const char Page1[] PROGMEM = R"htmlgrenze(
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+
+          .d-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+          }
+
+          .main {
+            width: 35%;
+            border: 2px lime dashed;
+            border-radius: 7px;
+            background-color: green;
+          }
+        </style>
+      </head>
+      <body>
+        <div class='d-flex'>
+          <div class='main'>
+            <h1>ESP32</h1>
+            <br>
+            <p>Der ESP32 ist ein kostengünstiger und mit geringem Leistungsbedarf ausgeführter 32-Bit-Mirkocontroller der 
+              chinesischen Firma espressif und ermöglicht durch seine offene Bauweise den Aufbau von WLAN-gesteuerten 
+              Aktoren und Sensoren.</p>
+              <br>
+              <h4>Der ESP32 ist einer der meisten verbreiteten Microcontroller für Smarthome Komponenten.</h4>
+          </div>
+        </div>
+      </body>
+    </html>
+)htmlgrenze";
 
 void setup() {
   WiFi.softAPConfig(local_ip, gateway, netmask);
@@ -36,6 +74,7 @@ void setup() {
 
   if(result) {
     server.on("/", handleRoot);
+    server.on("/uebung", handlePage1);
     server.onNotFound(handleNotFound);
     server.begin();
   }
@@ -47,6 +86,10 @@ void loop() {
 
 void handleRoot() {
   server.send(200, "text/html", StartPage);
+}
+
+void handlePage1() {
+  server.send(200, "text/html", Page1);
 }
 
 void handleNotFound() {
